@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SubtaskStoreRequest;
 use App\Http\Resources\SubtaskResource;
 use App\Models\Subtask;
 use Illuminate\Http\Request;
@@ -20,9 +21,12 @@ class SubtaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SubtaskStoreRequest $request)
     {
-        //
+        return SubtaskResource::make(Subtask::create([
+            'title' => $request->title,
+            'task_id' => $request->taskId
+        ]));
     }
 
     /**

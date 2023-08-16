@@ -9,6 +9,13 @@ class Task extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'description',
+        'status',
+        'column_id'
+    ];
+
     public function column()
     {
         return $this->belongsTo(Column::class);

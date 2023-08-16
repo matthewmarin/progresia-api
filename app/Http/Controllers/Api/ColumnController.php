@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ColumnStoreRequest;
 use App\Http\Resources\ColumnResource;
 use App\Models\Column;
 use Illuminate\Http\Request;
@@ -20,9 +21,12 @@ class ColumnController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ColumnStoreRequest $request)
     {
-        //
+        return ColumnResource::make(Column::create([
+            'name' => $request->name,
+            'board_id' => $request->boardId
+        ]));
     }
 
     /**

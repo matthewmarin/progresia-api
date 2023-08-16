@@ -9,6 +9,11 @@ class Subtask extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'task_id'
+    ];
+
     public function task()
     {
         return $this->belongsTo(Task::class);

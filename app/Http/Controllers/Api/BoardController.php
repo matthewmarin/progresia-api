@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BoardStoreRequest;
 use App\Http\Resources\BoardResource;
 use App\Models\Board;
 use Illuminate\Http\Request;
@@ -20,9 +21,14 @@ class BoardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BoardStoreRequest $request)
     {
-        //
+        return BoardResource::make(
+            Board::create([
+                'name' => $request->name,
+                'user_id' => $request->userId
+            ])
+        );
     }
 
     /**

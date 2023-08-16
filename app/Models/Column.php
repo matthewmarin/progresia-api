@@ -9,6 +9,11 @@ class Column extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'board_id'
+    ];
+
     public function board()
     {
         return $this->belongsTo(Board::class);
