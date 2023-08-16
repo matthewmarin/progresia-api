@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BoardStoreRequest;
+use App\Http\Requests\BoardUpdateRequest;
 use App\Http\Resources\BoardResource;
 use App\Models\Board;
 use Illuminate\Http\Request;
@@ -42,15 +43,25 @@ class BoardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(BoardUpdateRequest $request, Board $board)
     {
-        //
+        if (isset($request->name)) {
+            $board->name = $request->name;
+        }
+
+        if (isset($request->userId)) {
+            $board->user_id = $request->userId;
+        }
+
+        $board->save();
+
+        return BoardResource::make($board);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Board $board)
     {
         //
     }

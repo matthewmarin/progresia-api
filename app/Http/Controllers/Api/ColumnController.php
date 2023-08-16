@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ColumnStoreRequest;
+use App\Http\Requests\ColumnUpdateRequest;
 use App\Http\Resources\ColumnResource;
 use App\Models\Column;
 use Illuminate\Http\Request;
@@ -40,15 +41,25 @@ class ColumnController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ColumnUpdateRequest $request, Column $column)
     {
-        //
+        if (isset($request->name)) {
+            $column->name = $request->name;
+        }
+
+        if (isset($request->boardId)) {
+            $column->board_id = $request->boardId;
+        }
+
+        $column->save();
+
+        return ColumnResource::make($column);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Column $column)
     {
         //
     }
