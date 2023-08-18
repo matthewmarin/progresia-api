@@ -18,13 +18,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)
+        User::factory(1)
             ->has(
-                Board::factory(1)
+                Board::factory(2)
                     ->has(
-                        Column::factory(3)
+                        Column::factory(4)
                             ->has(
-                                Task::factory(5)
+                                Task::factory(3)
                                     ->has(
                                         Subtask::factory(3)
                                     )

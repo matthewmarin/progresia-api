@@ -14,9 +14,13 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return TaskResource::collection(Task::paginate());
+        $query = Task::query();
+        if (isset($request->columnId)) {
+            $query->where('column_id', $request->columnId);
+        }
+        return TaskResource::collection($query->paginate());
     }
 
     /**
@@ -28,7 +32,8 @@ class TaskController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'status' => $request->status,
-            'column_id' => $request->columnId
+            'column_id' => $request->columnId,
+            'is_completed' => $request->isCompleted
         ]));
     }
 
@@ -37,7 +42,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return TaskResource::make($task);
+        return TaskResource::make($task->loadMissing('subtasks'));
     }
 
     /**

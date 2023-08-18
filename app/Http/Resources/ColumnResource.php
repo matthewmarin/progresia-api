@@ -18,6 +18,7 @@ class ColumnResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'boardId' => $this->board_id,
+            'tasks' => TaskResource::collection($this->tasks),
         ];
     }
 }

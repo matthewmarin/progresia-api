@@ -14,9 +14,13 @@ class BoardController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return BoardResource::collection(Board::paginate());
+        $query = Board::query();
+        if (isset($request->userId)) {
+            $query->where('user_id', $request->userId);
+        }
+        return BoardResource::collection($query->paginate());
     }
 
     /**
@@ -37,7 +41,7 @@ class BoardController extends Controller
      */
     public function show(Board $board)
     {
-        return BoardResource::make($board);
+        return BoardResource::make($board->loadMissing('columns'));
     }
 
     /**

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->foreignId('task_id')->constrained();
             $table->timestamps();
+            $table->boolean('is_completed')->default(false);
         });
     }
 

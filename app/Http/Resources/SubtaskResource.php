@@ -18,6 +18,7 @@ class SubtaskResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'taskId' => $this->task_id,
+            'isCompleted' => $this->is_completed
         ];
     }
 }

@@ -26,6 +26,7 @@ class SubtaskStoreRequest extends FormRequest
         return [
             'title' => 'required',
             'taskId' => 'required',
+            'isCompleted' => 'required|boolean',
         ];
     }
 

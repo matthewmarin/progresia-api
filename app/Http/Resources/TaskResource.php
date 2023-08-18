@@ -20,6 +20,7 @@ class TaskResource extends JsonResource
             'description' => $this->description,
             'status' => $this->status,
             'columnId' => $this->column_id,
+            'subtasks' => SubtaskResource::collection($this->subtasks),
         ];
     }
 }

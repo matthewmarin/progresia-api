@@ -51,6 +51,10 @@ class SubtaskController extends Controller
             $subtask->task_id = $request->taskId;
         }
 
+        if (isset($request->isCompleted)) {
+            $subtask->is_completed = $request->isCompleted;
+        }
+
         $subtask->save();
 
         return SubtaskResource::make($subtask);

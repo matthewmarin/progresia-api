@@ -17,7 +17,8 @@ class BoardResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'userId' => $this->user_id
+            'userId' => $this->user_id,
+            'columns' => ColumnResource::collection($this->whenLoaded('columns')),
         ];
     }
 }
