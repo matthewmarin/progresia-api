@@ -7,6 +7,10 @@ use App\Http\Requests\BoardStoreRequest;
 use App\Http\Requests\BoardUpdateRequest;
 use App\Http\Resources\BoardResource;
 use App\Models\Board;
+use App\Models\Column;
+use App\Models\Subtask;
+use App\Models\Task;
+use Exception;
 use Illuminate\Http\Request;
 
 class BoardController extends Controller
@@ -67,6 +71,34 @@ class BoardController extends Controller
      */
     public function destroy(Board $board)
     {
-        //
+        try {
+            $columns = Column::where('board_id', $board->id)->get();
+
+            foreach ($columns as $column) {
+                $tasks = Task::where('column_id', $column->id)->get();
+
+                foreach ($tasks as $task) {
+                    Subtask::where('task_id', $task->id)->delete();
+                    $task->delete();
+                }
+
+                $column->delete();
+            }
+
+            $board->delete();
+
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Successfully deleted',
+            ]);
+        } catch (Exception $err) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot delete task',
+                'error' => $err
+            ]);
+        }
     }
 }

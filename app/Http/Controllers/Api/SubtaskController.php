@@ -65,6 +65,11 @@ class SubtaskController extends Controller
      */
     public function destroy(Subtask $subtask)
     {
-        //
+        $subtask->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully deleted'
+        ]);
     }
 }

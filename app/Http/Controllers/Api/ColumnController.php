@@ -7,6 +7,9 @@ use App\Http\Requests\ColumnStoreRequest;
 use App\Http\Requests\ColumnUpdateRequest;
 use App\Http\Resources\ColumnResource;
 use App\Models\Column;
+use App\Models\Subtask;
+use App\Models\Task;
+use Exception;
 use Illuminate\Http\Request;
 
 class ColumnController extends Controller
@@ -61,6 +64,29 @@ class ColumnController extends Controller
      */
     public function destroy(Column $column)
     {
-        //
+        try {
+            $tasks = Task::where('column_id', $column->id)->get();
+
+            foreach ($tasks as $task) {
+                $tasks = Task::where('column_id', $column->id)->get();
+                Subtask::where('task_id', $task->id)->delete();
+                $task->delete();
+            }
+
+            $column->delete();
+
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Successfully deleted',
+            ]);
+        } catch (Exception $err) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot delete task',
+                'error' => $err
+            ]);
+        }
     }
 }

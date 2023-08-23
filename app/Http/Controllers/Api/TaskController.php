@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Http\Resources\TaskResource;
+use App\Models\Subtask;
 use App\Models\Task;
+use Exception;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -50,6 +53,7 @@ class TaskController extends Controller
      */
     public function update(TaskUpdateRequest $request, Task $task)
     {
+
         if (isset($request->title)) {
             $task->title = $request->title;
         }
@@ -66,6 +70,9 @@ class TaskController extends Controller
             $task->column_id = $request->columnId;
         }
 
+        if (isset($request->subtaskId)) {
+            $task->subtask_id = $request->subtaskId;
+        }
         $task->save();
 
         return TaskResource::make($task);
@@ -76,6 +83,22 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+
+        try {
+            Subtask::where('task_id', $task->id)->delete();
+
+            $task->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Successfully deleted'
+            ]);
+        } catch (Exception $err) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot delete task'
+            ]);
+        }
     }
 }
